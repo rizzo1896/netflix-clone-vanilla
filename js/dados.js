@@ -36,37 +36,6 @@ const trending_movies = () =>
 
 trending_movies();
 
-const trending_tv = () =>
-  fetch(url_trending_tv)
-    .then((response) => {
-      if (!response.ok) {
-        throw Error("ERROR");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      // console.log(data.results);
-      const imgs = data.results
-        .map((item) => {
-          let img = document.createElement("img");
-          img.src = `https://www.themoviedb.org/t/p/w220_and_h330_face${item.poster_path}`;
-          img.classList.add("slider--item");
-          document.getElementById("teste").appendChild(img);
-          // carousel attributes
-          totalSlides = document.querySelectorAll(".slider--item").length;
-          document.querySelector(
-            ".cards--width"
-          ).style.width = `calc(220px * ${totalSlides})`;
-          return;
-        })
-        .join("");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-trending_tv();
-
 const goPrev = () => {
   const item = document.querySelector(".cards--width");
   const style = getComputedStyle(item);
@@ -90,15 +59,17 @@ const goNext = () => {
   const style = getComputedStyle(item);
   const element = style.marginLeft;
   const itemMarginLeft = parseInt(element);
-  let maximo = -3180;
-  if (itemMarginLeft > maximo) {
+  let maximo = window.innerWidth / 2;
+  let listW = item.childElementCount * 220;
+  if (listW > maximo) {
     document.querySelector(".cards--width").style.marginLeft = `calc(${
-      itemMarginLeft - 1120
+      itemMarginLeft - maximo
     }px)`;
-    // document.querySelector(".prev").style.visibility = "visible";
-    if (itemMarginLeft <= -2190) {
-      document.querySelector(".cards--width").style.marginLeft = `${maximo}px`;
-    }
+  }
+  if (itemMarginLeft <= (window.innerWidth - listW)/2) {
+    document.querySelector(".cards--width").style.marginLeft = `${
+      window.innerWidth - listW - 220
+    }px`;
   }
 };
 
