@@ -79,7 +79,7 @@ const goPrev = () => {
       document.querySelector(".cards--width").style.marginLeft = `${maximo}px`;
     } else {
       document.querySelector(".cards--width").style.marginLeft = `calc(${
-        itemMarginLeft + 1120
+        itemMarginLeft + Math.round(window.innerWidth / 2)
       }px)`;
     }
   }
